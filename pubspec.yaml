@@ -1,11 +1,11 @@
 name: cool_ui
 description: "A state-driven, animation-first, rounded Flutter UI framework that derives an entire visual language from two colors supplied by the user."
-version: 0.0.1
+version: 1.0.0
 homepage:
 
 environment:
   sdk: ^3.9.2
-  flutter: '>=3.3.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:

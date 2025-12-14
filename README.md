@@ -18,7 +18,7 @@ Add `cool_ui` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cool_ui: ^0.0.1
+  cool_ui: ^1.0.0
 ```
 
 Then run:
