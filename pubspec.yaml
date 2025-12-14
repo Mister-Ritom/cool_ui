@@ -1,7 +1,9 @@
 name: cool_ui
 description: "A state-driven, animation-first, rounded Flutter UI framework that derives an entire visual language from two colors supplied by the user."
 version: 1.0.0
-homepage:
+homepage: https://github.com/mister-ritom/cool_ui
+repository: https://github.com/mister-ritom/cool_ui
+issue_tracker: https://github.com/mister-ritom/cool_ui/issues
 
 environment:
   sdk: ^3.9.2
