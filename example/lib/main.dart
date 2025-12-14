@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cool_ui/cool_ui.dart';
+import 'package:cooler_ui/cooler_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,7 +55,7 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
     Future.delayed(const Duration(seconds: 1), () {
       if (mounted) {
         setState(() => _progressValue = 0.7);
-    }
+      }
     });
   }
 
@@ -68,7 +68,7 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
   @override
   Widget build(BuildContext context) {
     return CoolScaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: const Text('Cool UI Showcase'),
         backgroundColor: context.coolColors?.resolve(CoolColorToken.surface),
       ),
@@ -198,7 +198,7 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
-        ),
+                          ),
                           const SizedBox(height: 8),
                           const Text(
                             '✓ Press: Scale 0.96 + luminance shift',
@@ -476,26 +476,14 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
                   ],
                   rows: [
                     const CoolDataTableRow(
-                      cells: [
-                        Text('Alice'),
-                        Text('25'),
-                        Text('New York'),
-                      ],
+                      cells: [Text('Alice'), Text('25'), Text('New York')],
                     ),
                     const CoolDataTableRow(
-                      cells: [
-                        Text('Bob'),
-                        Text('30'),
-                        Text('London'),
-                      ],
+                      cells: [Text('Bob'), Text('30'), Text('London')],
                       isSelected: true,
                     ),
                     const CoolDataTableRow(
-                      cells: [
-                        Text('Charlie'),
-                        Text('28'),
-                        Text('Paris'),
-                      ],
+                      cells: [Text('Charlie'), Text('28'), Text('Paris')],
                     ),
                   ],
                   onRowTap: (index) => _showSnackBar('Row $index tapped'),
@@ -602,7 +590,7 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
                   message: 'This is an info alert',
                   type: CoolAlertType.info,
                 ),
-        ),
+              ),
               _buildWidgetCard(
                 'CoolAlert - Success',
                 const CoolAlert(

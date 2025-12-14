@@ -1,4 +1,4 @@
-# cool_ui
+# cooler_ui
 
 A state-driven, animation-first Flutter UI framework that derives an entire visual language from two colors supplied by the user.
 
@@ -14,11 +14,11 @@ A state-driven, animation-first Flutter UI framework that derives an entire visu
 
 ## 📦 Installation
 
-Add `cool_ui` to your `pubspec.yaml`:
+Add `cooler_ui` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  cool_ui: ^1.0.0
+  cooler_ui: ^1.0.0
 ```
 
 Then run:
@@ -33,7 +33,7 @@ flutter pub get
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:cool_ui/cool_ui.dart';
+import 'package:cooler_ui/cooler_ui.dart';
 
 void main() {
   runApp(const MyApp());
@@ -477,7 +477,7 @@ Container(
 
 ## 🎯 Philosophy
 
-**cool_ui** is not just a widget pack—it's a complete design system that:
+**cooler_ui** is not just a widget pack—it's a complete design system that:
 
 - **Prioritizes Interaction**: Every tap, hover, and press is visually meaningful
 - **Derives from Colors**: Two colors generate an entire visual language
