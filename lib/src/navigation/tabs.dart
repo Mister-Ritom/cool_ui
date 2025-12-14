@@ -13,7 +13,7 @@ class CoolTabs extends StatefulWidget {
   final ValueChanged<int> onTap;
   final Color? selectedColor;
   final Color? unselectedColor;
-  
+
   const CoolTabs({
     super.key,
     required this.tabs,
@@ -22,7 +22,7 @@ class CoolTabs extends StatefulWidget {
     this.selectedColor,
     this.unselectedColor,
   });
-  
+
   @override
   State<CoolTabs> createState() => _CoolTabsState();
 }
@@ -31,14 +31,16 @@ class _CoolTabsState extends State<CoolTabs> {
   @override
   Widget build(BuildContext context) {
     final coolColors = context.coolColors;
-    final selectedColor = widget.selectedColor ?? 
-        coolColors?.resolve(CoolColorToken.primary) ?? 
+    final selectedColor =
+        widget.selectedColor ??
+        coolColors?.resolve(CoolColorToken.primary) ??
         Colors.blue;
-    final unselectedColor = widget.unselectedColor ?? 
-        coolColors?.resolve(CoolColorToken.textSecondary) ?? 
+    final unselectedColor =
+        widget.unselectedColor ??
+        coolColors?.resolve(CoolColorToken.textSecondary) ??
         Colors.grey;
-    
-    return Container(
+
+    return SizedBox(
       height: 48,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -58,20 +60,23 @@ class _CoolTabsState extends State<CoolTabs> {
                 borderRadius: BorderRadius.circular(CoolRadiusScale.md),
               ),
               child: Center(
-                child: Text(
-                  widget.tabs[index],
-                  style: TextStyle(
-                    color: isSelected ? selectedColor : unselectedColor,
-                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                    fontSize: 14,
-                  ),
-                )
-                    .animate(target: isSelected ? 1 : 0)
-                    .scale(
-                      begin: const Offset(1, 1),
-                      end: const Offset(1.05, 1.05),
-                      duration: CoolMotion.config.shortDuration,
-                    ),
+                child:
+                    Text(
+                          widget.tabs[index],
+                          style: TextStyle(
+                            color: isSelected ? selectedColor : unselectedColor,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        )
+                        .animate(target: isSelected ? 1 : 0)
+                        .scale(
+                          begin: const Offset(1, 1),
+                          end: const Offset(1.05, 1.05),
+                          duration: CoolMotion.config.shortDuration,
+                        ),
               ),
             ),
           );
@@ -80,4 +85,3 @@ class _CoolTabsState extends State<CoolTabs> {
     );
   }
 }
-

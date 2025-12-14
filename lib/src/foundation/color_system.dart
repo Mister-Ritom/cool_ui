@@ -206,7 +206,7 @@ class CoolColorSystem {
       _selected = primaryColor.withValues(alpha: 0.08);
       _disabled = Colors.black.withValues(alpha: 0.02);
 
-      _overlay = Colors.white;
+      _overlay = Colors.grey;
       _overlayScrim = Colors.black.withValues(alpha: 0.4);
       _shadow = Colors.black.withValues(alpha: 0.1);
     }
