@@ -1,40 +1,32 @@
-## 1.0.0
+# Changelog
 
-### 🎉 Stable Release
+All notable changes to this package will be documented in this file.
 
-- Introduced **cool_ui** as a complete, state-driven, animation-first UI framework
-- Added two-color–derived **design system** that generates a full semantic color palette
-- Implemented **CoolThemeExtension** for global theming and defaults
-- Automatic **light/dark mode** adaptation
-- Fully opted into **null safety**
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
-### ✨ Core Widgets
+## [1.0.1]
 
-- Layout: `CoolScaffold`, `CoolRow`, `CoolColumn`, `CoolStack`, `CoolGap`, `CoolDivider`
-- Buttons: `CoolButton` (filled, outline, text), `CoolIconButton`, `CoolFloatingButton`
-- Forms: `CoolTextField`
-- Display: `CoolCard`, `CoolAvatar`, `CoolSkeleton`
-- Navigation: `CoolBottomNavigationBar`, `CoolTabs`
-- Overlays: `CoolDialog`, `CoolSheet`
-- Data & Interaction: `CoolDataTable`, `CoolCollapsible`, `CoolSection`
-- Advanced interactions: `CoolDraggable`, `CoolDraggableLayout`, `CoolSwipeAction`
+### Added
 
-### 🎭 Animation System
+- New widget **`CoolHorizontalSliderSelector`**
+  - A horizontally scrollable, center-aligned selection control.
+  - Supports swipe and tap interactions with smooth snapping behavior.
+  - The selected item is always visually centered.
+  - Side items fade progressively using a directional opacity falloff.
+  - Edge items are partially clipped with smooth gradient fading.
+- New data model **`HorizontalSelectionItem`**
+  - Represents a selectable item with:
+    - optional `IconData`
+    - optional `String` title
+  - Items can render icon-only, text-only, or icon + text in a row.
+- New selection callback typedef:
+  ```dart
+  typedef OnSelectCallback =
+      void Function(int index, HorizontalSelectionItem item);
+  ```
 
-- State-based animations for idle, hover, pressed, focused, selected states
-- Configurable animation curves, durations, and scale effects
-- Minimum press duration to ensure visible interaction feedback
+### Fixed
 
-### 🎨 Styling & Customization
-
-- Two-layer style resolution:
-  - Global defaults via theme extension
-  - Local widget-level overrides
-- Fully customizable radius, colors, elevations, and animation configs
-- Semantic color tokens exposed via context helpers
-
-### 📦 Developer Experience
-
-- Clean public API surface
-- Fully documented example app
-- Designed for composability and extensibility
+- CoolBadge.offset was previously ignored and had no visual effect.
+- CoolBadge.position enum was not applied to layout and did not affect badge placement.

@@ -365,6 +365,19 @@ CoolSheet.show(
 )
 ```
 
+### Selectors
+
+```dart
+CoolHorizontalSliderSelector(
+  items: [
+    HorizontalSelectionItem(icon: Icons.home, title: 'Home'),
+    HorizontalSelectionItem(icon: Icons.search, title: 'Search'),
+    HorizontalSelectionItem(icon: Icons.notifications, title: 'Alerts'),
+    HorizontalSelectionItem(icon: Icons.person, title: 'Profile'),
+  ],
+)
+```
+
 ## 🎛️ Customization
 
 ### Custom Animation Config
@@ -474,6 +487,10 @@ Container(
 - `CoolDraggable` - Draggable item with animated feedback
 - `CoolDraggableLayout` - Container for drag-and-drop interactions
 - `CoolSwipeAction` - Swipe-to-reveal action buttons
+
+### Selectors
+
+- `CoolHorizontalSliderSelector` - Centered horizontal selector with swipe and tap support
 
 ## 🎯 Philosophy
 
