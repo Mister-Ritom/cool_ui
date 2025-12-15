@@ -11,22 +11,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // User MUST instantiate CoolThemeExtension
-    final coolTheme = CoolThemeExtension(
+    final coolThemeDark = CoolThemeExtension(
       primaryColor: const Color(0xFF6366F1), // Indigo
       secondaryColor: const Color(0xFFEC4899), // Pink
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
+    );
+    final coolThemeLight = CoolThemeExtension(
+      primaryColor: const Color(0xFF6366F1), // Indigo
+      secondaryColor: const Color(0xFFEC4899), // Pink
+      themeMode: ThemeMode.light,
     );
 
     return MaterialApp(
       title: 'Cool UI Example',
       theme: ThemeData(
         useMaterial3: true,
-        extensions: [coolTheme],
+        extensions: [coolThemeLight],
         brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        extensions: [coolTheme],
+        extensions: [coolThemeDark],
         brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
@@ -47,6 +52,13 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
   int _tabIndex = 0;
   double _progressValue = 0.3;
   final _textController = TextEditingController();
+
+  final items = [
+    HorizontalSelectionItem(icon: Icons.home, title: 'Home'),
+    HorizontalSelectionItem(icon: Icons.search, title: 'Search'),
+    HorizontalSelectionItem(icon: Icons.notifications, title: 'Alerts'),
+    HorizontalSelectionItem(icon: Icons.person, title: 'Profile'),
+  ];
 
   @override
   void initState() {
@@ -813,6 +825,19 @@ class _WidgetShowcaseState extends State<WidgetShowcase> {
                       ),
                     ),
                   ),
+                ),
+              ),
+            ]),
+            _buildSection("Draggable selector", [
+              _buildWidgetCard(
+                "Selector",
+                CoolHorizontalSliderSelector(
+                  items: items,
+                  visibleItemCount: 3,
+                  onSelect: (index, item) {
+                    final item = items[index];
+                    print(item.title);
+                  },
                 ),
               ),
             ]),

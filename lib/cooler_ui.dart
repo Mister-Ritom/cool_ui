@@ -61,3 +61,4 @@ export 'src/menus/menu.dart';
 // Interactions
 export 'src/interactions/draggable.dart';
 export 'src/interactions/swipe_action.dart';
+export 'src/interactions/horizontal_selector.dart';
