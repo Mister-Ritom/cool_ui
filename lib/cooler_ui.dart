@@ -38,6 +38,7 @@ export 'src/data/card.dart';
 export 'src/data/collapsible.dart';
 export 'src/data/section.dart';
 export 'src/data/data_table.dart';
+export 'src/data/shuffled_stack.dart';
 
 // Media
 export 'src/media/avatar.dart';

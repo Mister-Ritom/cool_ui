@@ -5,7 +5,6 @@ import '../foundation/theme.dart';
 import '../foundation/motion.dart';
 import '../foundation/state_resolver.dart';
 
-/// Text field style
 class CoolTextFieldStyle {
   final double? radius;
   final EdgeInsets? padding;
@@ -14,7 +13,7 @@ class CoolTextFieldStyle {
   final Color? backgroundColor;
   final Color? borderColor;
   final double? borderWidth;
-  
+
   const CoolTextFieldStyle({
     this.radius,
     this.padding,
@@ -26,7 +25,6 @@ class CoolTextFieldStyle {
   });
 }
 
-/// Text field with state animations
 class CoolTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
@@ -45,7 +43,7 @@ class CoolTextField extends StatefulWidget {
   final CoolTextFieldStyle? style;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  
+
   const CoolTextField({
     super.key,
     this.controller,
@@ -66,7 +64,7 @@ class CoolTextField extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
   });
-  
+
   @override
   State<CoolTextField> createState() => _CoolTextFieldState();
 }
@@ -74,14 +72,14 @@ class CoolTextField extends StatefulWidget {
 class _CoolTextFieldState extends State<CoolTextField> {
   late FocusNode _focusNode;
   bool _hasFocus = false;
-  
+
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_onFocusChange);
   }
-  
+
   @override
   void dispose() {
     if (widget.focusNode == null) {
@@ -91,103 +89,102 @@ class _CoolTextFieldState extends State<CoolTextField> {
     }
     super.dispose();
   }
-  
+
   void _onFocusChange() {
     setState(() {
       _hasFocus = _focusNode.hasFocus;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final coolColors = context.coolColors;
     final coolTheme = context.coolTheme;
-    
+
     if (coolColors == null || coolTheme == null) {
-      return TextField(
-        controller: widget.controller,
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          labelText: widget.labelText,
-        ),
-      );
+      return TextField(controller: widget.controller);
     }
-    
+
     final hasError = widget.errorText != null;
     final state = hasError
         ? CoolInteractionState.error
         : _hasFocus
-            ? CoolInteractionState.focused
-            : CoolInteractionState.idle;
-    
+        ? CoolInteractionState.focused
+        : CoolInteractionState.idle;
+
     final stateResolver = CoolStateResolver(
       colorSystem: coolColors,
       state: state,
       isEnabled: widget.enabled,
       hasError: hasError,
     );
-    
+
     final style = widget.style ?? const CoolTextFieldStyle();
     final radius = style.radius ?? context.coolRadius;
-    final padding = style.padding ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
-    final bgColor = style.backgroundColor ?? 
-        stateResolver.resolveColor(CoolColorToken.surface);
-    final borderColor = style.borderColor ?? 
+    final padding =
+        style.padding ??
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
+
+    final borderColor =
+        style.borderColor ??
         (hasError
             ? stateResolver.resolveColor(CoolColorToken.error)
             : _hasFocus
-                ? stateResolver.resolveColor(CoolColorToken.borderFocus)
-                : stateResolver.resolveColor(CoolColorToken.border));
+            ? stateResolver.resolveColor(CoolColorToken.borderFocus)
+            : stateResolver.resolveColor(CoolColorToken.border));
+
     final borderWidth = style.borderWidth ?? (_hasFocus ? 2.0 : 1.0);
-    
-    Widget textField = Container(
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(radius),
-        border: Border.all(
-          color: borderColor,
-          width: borderWidth,
-        ),
-      ),
-      child: TextField(
-        controller: widget.controller,
-        focusNode: _focusNode,
-        obscureText: widget.obscureText,
-        enabled: widget.enabled,
-        readOnly: widget.readOnly,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        keyboardType: widget.keyboardType,
-        onChanged: widget.onChanged,
-        onTap: widget.onTap,
-        style: style.textStyle ?? TextStyle(
-          color: stateResolver.resolveColor(CoolColorToken.text),
-          fontSize: 16,
-        ),
-        decoration: InputDecoration(
-          hintText: widget.hintText,
-          labelText: widget.labelText,
-          helperText: widget.helperText,
-          errorText: widget.errorText,
-          prefixIcon: widget.prefixIcon,
-          suffixIcon: widget.suffixIcon,
-          border: InputBorder.none,
-          contentPadding: padding,
-          hintStyle: style.hintStyle ?? TextStyle(
-            color: stateResolver.resolveColor(CoolColorToken.textSecondary),
+
+    final outline = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(radius),
+      borderSide: BorderSide(color: borderColor, width: borderWidth),
+    );
+
+    Widget textField = TextField(
+      controller: widget.controller,
+      focusNode: _focusNode,
+      obscureText: widget.obscureText,
+      enabled: widget.enabled,
+      readOnly: widget.readOnly,
+      maxLines: widget.maxLines,
+      minLines: widget.minLines,
+      keyboardType: widget.keyboardType,
+      onChanged: widget.onChanged,
+      onTap: widget.onTap,
+      style:
+          style.textStyle ??
+          TextStyle(
+            color: stateResolver.resolveColor(CoolColorToken.text),
+            fontSize: 16,
           ),
-        ),
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        labelText: widget.labelText,
+        helperText: widget.helperText,
+        errorText: widget.errorText,
+        prefixIcon: widget.prefixIcon,
+        suffixIcon: widget.suffixIcon,
+        contentPadding: padding,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        border: outline,
+        enabledBorder: outline,
+        focusedBorder: outline,
+        errorBorder: outline,
+        focusedErrorBorder: outline,
+        hintStyle:
+            style.hintStyle ??
+            TextStyle(
+              color: stateResolver.resolveColor(CoolColorToken.textSecondary),
+            ),
       ),
     );
-    
-    // Add focus animation
+
     if (_hasFocus) {
       textField = textField.animate().fadeIn(
         duration: CoolMotion.config.shortDuration,
       );
     }
-    
-    // Add error shake
+
     if (hasError) {
       textField = textField.animate().shake(
         hz: 4,
@@ -195,8 +192,7 @@ class _CoolTextFieldState extends State<CoolTextField> {
         duration: CoolMotion.config.defaultDuration,
       );
     }
-    
+
     return textField;
   }
 }
-
