@@ -10,7 +10,7 @@ class CoolSwipeActionItem {
   final IconData? icon;
   final Color? color;
   final VoidCallback? onTap;
-  
+
   const CoolSwipeActionItem({
     required this.label,
     this.icon,
@@ -25,7 +25,7 @@ class CoolSwipeAction extends StatefulWidget {
   final List<CoolSwipeActionItem> leftActions;
   final List<CoolSwipeActionItem> rightActions;
   final double actionWidth;
-  
+
   const CoolSwipeAction({
     super.key,
     required this.child,
@@ -33,7 +33,7 @@ class CoolSwipeAction extends StatefulWidget {
     this.rightActions = const [],
     this.actionWidth = 80,
   });
-  
+
   @override
   State<CoolSwipeAction> createState() => _CoolSwipeActionState();
 }
@@ -42,13 +42,13 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
     with SingleTickerProviderStateMixin {
   final _controller = ScrollController();
   double _dragOffset = 0.0;
-  
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-  
+
   void _handleDragUpdate(DragUpdateDetails details) {
     setState(() {
       _dragOffset += details.primaryDelta ?? 0;
@@ -58,7 +58,7 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
       );
     });
   }
-  
+
   void _handleDragEnd(DragEndDetails details) {
     final threshold = widget.actionWidth * 0.5;
     if (_dragOffset.abs() < threshold) {
@@ -74,14 +74,14 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final coolColors = context.coolColors;
-    
+
     // Use default radius - child should handle its own clipping
     final radius = CoolRadiusScale.md;
-    
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: GestureDetector(
@@ -101,7 +101,8 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
                       children: widget.leftActions.map((action) {
                         return Container(
                           width: widget.actionWidth,
-                          color: action.color ?? 
+                          color:
+                              action.color ??
                               coolColors?.resolve(CoolColorToken.primary) ??
                               Colors.blue,
                           child: Material(
@@ -112,10 +113,7 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (action.icon != null)
-                                    Icon(
-                                      action.icon,
-                                      color: Colors.white,
-                                    ),
+                                    Icon(action.icon, color: Colors.white),
                                   const SizedBox(height: 4),
                                   Text(
                                     action.label,
@@ -138,7 +136,8 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
                       children: widget.rightActions.map((action) {
                         return Container(
                           width: widget.actionWidth,
-                          color: action.color ?? 
+                          color:
+                              action.color ??
                               coolColors?.resolve(CoolColorToken.error) ??
                               Colors.red,
                           child: Material(
@@ -149,10 +148,7 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (action.icon != null)
-                                    Icon(
-                                      action.icon,
-                                      color: Colors.white,
-                                    ),
+                                    Icon(action.icon, color: Colors.white),
                                   const SizedBox(height: 4),
                                   Text(
                                     action.label,
@@ -175,7 +171,8 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
             AnimatedContainer(
               duration: CoolMotion.config.defaultDuration,
               curve: CoolMotion.config.defaultCurve,
-              transform: Matrix4.identity()..translate(_dragOffset),
+              transform: Matrix4.identity()
+                ..setTranslationRaw(_dragOffset, 0.0, 0.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(radius),
                 child: widget.child,
@@ -187,4 +184,3 @@ class _CoolSwipeActionState extends State<CoolSwipeAction>
     );
   }
 }
-

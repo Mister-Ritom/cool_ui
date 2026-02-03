@@ -39,7 +39,7 @@ class CoolFloatingButton extends StatefulWidget {
 
 class _CoolFloatingButtonState extends State<CoolFloatingButton> {
   bool _isHovered = false;
-  bool _isPressed = false;
+  final bool _isPressed = false;
   
   @override
   Widget build(BuildContext context) {

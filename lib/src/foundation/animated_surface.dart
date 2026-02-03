@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:cooler_ui/cooler_ui.dart';
 import 'package:flutter/material.dart';
-import 'motion.dart';
-import 'interaction_state.dart';
-import 'radius_scale.dart';
 
 /// Animated surface that responds to state changes
 class CoolAnimatedSurface extends StatefulWidget {
@@ -168,7 +165,8 @@ class _CoolAnimatedSurfaceState extends State<CoolAnimatedSurface>
     Widget surface = AnimatedContainer(
       duration: duration,
       curve: CoolMotion.config.defaultCurve,
-      transform: Matrix4.identity()..scale(_currentValues.scale),
+      transform: Matrix4.identity()
+        ..scaleByDouble(_currentValues.scale, _currentValues.scale, 1.0, 1.0),
       decoration: BoxDecoration(
         color: finalColor,
         borderRadius: BorderRadius.circular(radius),

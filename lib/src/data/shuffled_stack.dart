@@ -405,12 +405,18 @@ class _CoolShuffledStackState extends State<CoolShuffledStack>
     final t = widget.transformCurve.transform(_controller.value);
 
     final matrix = Matrix4.identity()
-      ..translate(
+      ..setTranslationRaw(
         lerpDouble(0, g.offset.dx, t)!,
         lerpDouble(0, g.offset.dy, t)!,
+        0.0,
       )
       ..rotateZ(lerpDouble(0, g.rotation, t)!)
-      ..scale(lerpDouble(1, g.scale, t)!);
+      ..scaleByDouble(
+        lerpDouble(1, g.scale, t)!,
+        lerpDouble(1, g.scale, t)!,
+        1.0,
+        1.0,
+      );
 
     return IgnorePointer(
       /// Only the top card can receive pointer events

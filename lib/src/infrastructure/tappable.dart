@@ -33,7 +33,7 @@ class CoolTappable extends StatefulWidget {
 class _CoolTappableState extends State<CoolTappable> {
   bool _isHovered = false;
   bool _isPressed = false;
-  bool _isFocused = false;
+  final bool _isFocused = false;
   DateTime? _pressStartTime;
   static const _minPressVisibilityDuration = Duration(milliseconds: 120);
   

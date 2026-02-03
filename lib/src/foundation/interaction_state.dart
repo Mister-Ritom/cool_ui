@@ -29,10 +29,6 @@ class CoolInteractionStateManager extends ChangeNotifier {
     transitionTo(CoolInteractionState.idle);
   }
   
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
 
 /// Animation values derived from state
