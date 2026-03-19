@@ -13,9 +13,10 @@ class CoolScaffold extends StatelessWidget {
   final Color? backgroundColor;
   final bool extendBody;
   final bool extendBodyBehindAppBar;
-  
+  final Key? _scaffoldKey;
+
   const CoolScaffold({
-    super.key,
+    Key? key,
     this.appBar,
     required this.body,
     this.bottomNavigationBar,
@@ -25,22 +26,27 @@ class CoolScaffold extends StatelessWidget {
     this.backgroundColor,
     this.extendBody = false,
     this.extendBodyBehindAppBar = false,
-  });
-  
+  }) : _scaffoldKey = key,
+       super(key: null);
+
   @override
   Widget build(BuildContext context) {
     final coolColors = context.coolColors;
-    final bgColor = backgroundColor ?? 
-        coolColors?.resolve(CoolColorToken.background) ?? 
+    final bgColor =
+        backgroundColor ??
+        coolColors?.resolve(CoolColorToken.background) ??
         Colors.transparent;
-    
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: bgColor,
       appBar: appBar != null
-          ? PreferredSize(
-              preferredSize: const Size.fromHeight(kToolbarHeight),
-              child: appBar!,
-            )
+          ? (appBar is PreferredSizeWidget
+                ? appBar as PreferredSizeWidget
+                : PreferredSize(
+                    preferredSize: const Size.fromHeight(kToolbarHeight),
+                    child: appBar!,
+                  ))
           : null,
       body: body,
       bottomNavigationBar: bottomNavigationBar,
@@ -52,4 +58,3 @@ class CoolScaffold extends StatelessWidget {
     );
   }
 }
-

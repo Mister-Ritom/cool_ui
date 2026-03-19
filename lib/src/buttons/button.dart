@@ -13,7 +13,7 @@ class CoolButtonStyle {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final TextStyle? textStyle;
-  
+
   const CoolButtonStyle({
     this.radius,
     this.padding,
@@ -22,7 +22,7 @@ class CoolButtonStyle {
     this.foregroundColor,
     this.textStyle,
   });
-  
+
   CoolButtonStyle copyWith({
     double? radius,
     EdgeInsets? padding,
@@ -46,6 +46,8 @@ class CoolButtonStyle {
 class CoolButton extends StatefulWidget {
   final Widget? child;
   final String? text;
+  final Widget? leading;
+  final Widget? trailing;
   final VoidCallback? onPressed;
   final VoidCallback? onLongPress;
   final bool enabled;
@@ -53,11 +55,13 @@ class CoolButton extends StatefulWidget {
   final CoolButtonStyle? style;
   final CoolButtonVariant variant;
   final CoolButtonSize size;
-  
+
   const CoolButton({
     super.key,
     this.child,
     this.text,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.onLongPress,
     this.enabled = true,
@@ -65,25 +69,18 @@ class CoolButton extends StatefulWidget {
     this.style,
     this.variant = CoolButtonVariant.primary,
     this.size = CoolButtonSize.medium,
-  }) : assert(child != null || text != null, 'Either child or text must be provided');
-  
+  }) : assert(
+         child != null || text != null,
+         'Either child or text must be provided',
+       );
+
   @override
   State<CoolButton> createState() => _CoolButtonState();
 }
 
-enum CoolButtonVariant {
-  primary,
-  secondary,
-  accent,
-  outline,
-  text,
-}
+enum CoolButtonVariant { primary, secondary, accent, outline, text, ghost }
 
-enum CoolButtonSize {
-  small,
-  medium,
-  large,
-}
+enum CoolButtonSize { small, sm, medium, md, large, lg }
 
 class _CoolButtonState extends State<CoolButton> {
   late final CoolInteractionStateManager _stateManager;
@@ -91,7 +88,7 @@ class _CoolButtonState extends State<CoolButton> {
   bool _isPressed = false;
   DateTime? _pressStartTime;
   static const _minPressVisibilityDuration = Duration(milliseconds: 120);
-  
+
   @override
   void initState() {
     super.initState();
@@ -100,7 +97,7 @@ class _CoolButtonState extends State<CoolButton> {
       _stateManager.transitionTo(CoolInteractionState.disabled);
     }
   }
-  
+
   @override
   void didUpdateWidget(CoolButton oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -110,13 +107,13 @@ class _CoolButtonState extends State<CoolButton> {
       _stateManager.transitionTo(CoolInteractionState.idle);
     }
   }
-  
+
   @override
   void dispose() {
     _stateManager.dispose();
     super.dispose();
   }
-  
+
   void _handlePointerDown() {
     if (widget.enabled && !widget.isLoading) {
       _pressStartTime = DateTime.now();
@@ -124,13 +121,13 @@ class _CoolButtonState extends State<CoolButton> {
       _stateManager.transitionTo(CoolInteractionState.pressed);
     }
   }
-  
+
   void _handlePointerUp() {
     if (widget.enabled && !widget.isLoading) {
       final pressDuration = _pressStartTime != null
           ? DateTime.now().difference(_pressStartTime!)
           : Duration.zero;
-      
+
       // Ensure minimum press visibility
       if (pressDuration < _minPressVisibilityDuration) {
         final remainingTime = _minPressVisibilityDuration - pressDuration;
@@ -159,7 +156,7 @@ class _CoolButtonState extends State<CoolButton> {
       _pressStartTime = null;
     }
   }
-  
+
   void _handlePointerCancel() {
     if (widget.enabled && !widget.isLoading) {
       _pressStartTime = null;
@@ -168,7 +165,7 @@ class _CoolButtonState extends State<CoolButton> {
       _stateManager.transitionTo(CoolInteractionState.idle);
     }
   }
-  
+
   void _handleLongPress() {
     if (widget.enabled && !widget.isLoading) {
       _stateManager.transitionTo(CoolInteractionState.longPressed);
@@ -181,33 +178,34 @@ class _CoolButtonState extends State<CoolButton> {
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final coolColors = context.coolColors;
     final coolTheme = context.coolTheme;
-    
+
     if (coolColors == null || coolTheme == null) {
       return _buildFallbackButton();
     }
-    
+
     final stateResolver = CoolStateResolver(
       colorSystem: coolColors,
       state: _stateManager.state,
       isEnabled: widget.enabled && !widget.isLoading,
     );
-    
+
     final style = widget.style ?? const CoolButtonStyle();
     final radius = style.radius ?? context.coolRadius;
     final padding = style.padding ?? _getPaddingForSize(widget.size);
-    
+
     // Resolve colors based on variant
     Color bgColor;
     Color fgColor;
-    final isFilled = widget.variant != CoolButtonVariant.outline && 
-                     widget.variant != CoolButtonVariant.text;
+    final isFilled =
+        widget.variant != CoolButtonVariant.outline &&
+        widget.variant != CoolButtonVariant.text;
     final isOutline = widget.variant == CoolButtonVariant.outline;
-    
+
     switch (widget.variant) {
       case CoolButtonVariant.primary:
         bgColor = stateResolver.resolveColor(CoolColorToken.primary);
@@ -229,29 +227,50 @@ class _CoolButtonState extends State<CoolButton> {
         bgColor = Colors.transparent;
         fgColor = stateResolver.resolveColor(CoolColorToken.primary);
         break;
+      case CoolButtonVariant.ghost:
+        bgColor = Colors.transparent;
+        fgColor = stateResolver.resolveColor(CoolColorToken.text);
+        break;
     }
-    
+
     // Override with style if provided
     bgColor = style.backgroundColor ?? bgColor;
     fgColor = style.foregroundColor ?? fgColor;
-    
+
     // Get tint colors for states
     final hoverTint = stateResolver.resolveColor(CoolColorToken.hover);
     final pressedTint = stateResolver.resolveColor(CoolColorToken.pressed);
-    final tintColor = _stateManager.isPressed 
-        ? pressedTint 
+    final tintColor = _stateManager.isPressed
+        ? pressedTint
         : (_stateManager.isHovered ? hoverTint : null);
-    
-    Widget buttonContent = widget.child ?? 
-        Text(
-          widget.text!,
-          style: style.textStyle ?? TextStyle(
-            color: fgColor,
-            fontSize: _getFontSizeForSize(widget.size),
-            fontWeight: FontWeight.w600,
-          ),
+
+    Widget buttonContent =
+        widget.child ??
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (widget.leading != null) ...[
+              widget.leading!,
+              const SizedBox(width: 8),
+            ],
+            Text(
+              widget.text!,
+              style:
+                  style.textStyle ??
+                  TextStyle(
+                    color: fgColor,
+                    fontSize: _getFontSizeForSize(widget.size),
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            if (widget.trailing != null) ...[
+              const SizedBox(width: 8),
+              widget.trailing!,
+            ],
+          ],
         );
-    
+
     if (widget.isLoading) {
       _stateManager.transitionTo(CoolInteractionState.loading);
       buttonContent = SizedBox(
@@ -263,7 +282,7 @@ class _CoolButtonState extends State<CoolButton> {
         ),
       );
     }
-    
+
     Widget button = CoolAnimatedSurface(
       stateManager: _stateManager,
       backgroundColor: bgColor,
@@ -282,18 +301,20 @@ class _CoolButtonState extends State<CoolButton> {
         child: Center(child: buttonContent),
       ),
     );
-    
+
     return GestureDetector(
-      onTapDown: widget.enabled && !widget.isLoading 
+      onTapDown: widget.enabled && !widget.isLoading
           ? (_) => _handlePointerDown()
           : null,
-      onTapUp: widget.enabled && !widget.isLoading 
+      onTapUp: widget.enabled && !widget.isLoading
           ? (_) => _handlePointerUp()
           : null,
-      onTapCancel: widget.enabled && !widget.isLoading 
+      onTapCancel: widget.enabled && !widget.isLoading
           ? () => _handlePointerCancel()
           : null,
-      onLongPress: widget.enabled && !widget.isLoading ? _handleLongPress : null,
+      onLongPress: widget.enabled && !widget.isLoading
+          ? _handleLongPress
+          : null,
       child: MouseRegion(
         onEnter: widget.enabled && !widget.isLoading
             ? (_) {
@@ -315,34 +336,39 @@ class _CoolButtonState extends State<CoolButton> {
       ),
     );
   }
-  
+
   Widget _buildFallbackButton() {
     return ElevatedButton(
       onPressed: widget.enabled && !widget.isLoading ? widget.onPressed : null,
       child: widget.child ?? Text(widget.text ?? ''),
     );
   }
-  
+
   EdgeInsets _getPaddingForSize(CoolButtonSize size) {
     switch (size) {
       case CoolButtonSize.small:
+      case CoolButtonSize.sm:
         return const EdgeInsets.symmetric(horizontal: 12, vertical: 8);
       case CoolButtonSize.medium:
+      case CoolButtonSize.md:
         return const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
       case CoolButtonSize.large:
+      case CoolButtonSize.lg:
         return const EdgeInsets.symmetric(horizontal: 24, vertical: 16);
     }
   }
-  
+
   double _getFontSizeForSize(CoolButtonSize size) {
     switch (size) {
       case CoolButtonSize.small:
+      case CoolButtonSize.sm:
         return 14;
       case CoolButtonSize.medium:
+      case CoolButtonSize.md:
         return 16;
       case CoolButtonSize.large:
+      case CoolButtonSize.lg:
         return 18;
     }
   }
 }
-

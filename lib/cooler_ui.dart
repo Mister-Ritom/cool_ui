@@ -7,6 +7,7 @@ export 'src/foundation/state_resolver.dart';
 export 'src/foundation/theme.dart';
 export 'src/foundation/interaction_state.dart';
 export 'src/foundation/animated_surface.dart';
+export 'src/foundation/glass_container.dart';
 
 // Infrastructure
 export 'src/infrastructure/portal.dart';
@@ -15,11 +16,13 @@ export 'src/infrastructure/tappable.dart';
 
 // Layout
 export 'src/layout/scaffold.dart';
+export 'src/layout/sliver_app_bar.dart';
 export 'src/layout/layout.dart';
 export 'src/layout/row_column.dart';
 export 'src/layout/stack.dart';
 export 'src/layout/divider.dart';
 export 'src/layout/gap.dart';
+export 'src/layout/app_bar.dart';
 
 // Buttons
 export 'src/buttons/button.dart';
@@ -29,6 +32,7 @@ export 'src/buttons/floating_button.dart';
 // Icons
 export 'src/icons/icon.dart';
 export 'src/icons/badge.dart';
+export 'package:lucide_icons_flutter/lucide_icons.dart';
 
 // Forms
 export 'src/forms/text_field.dart';
@@ -39,6 +43,8 @@ export 'src/data/collapsible.dart';
 export 'src/data/section.dart';
 export 'src/data/data_table.dart';
 export 'src/data/shuffled_stack.dart';
+export 'src/data/list_tile.dart';
+export 'src/data/settings_tile.dart';
 
 // Media
 export 'src/media/avatar.dart';
@@ -51,6 +57,7 @@ export 'src/navigation/tabs.dart';
 export 'src/feedback/progress.dart';
 export 'src/feedback/alert.dart';
 export 'src/feedback/skeleton.dart';
+export 'src/feedback/pull_to_refresh.dart';
 
 // Overlays
 export 'src/overlays/dialog.dart';

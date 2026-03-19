@@ -5,6 +5,7 @@ import '../foundation/state_resolver.dart';
 import '../foundation/interaction_state.dart';
 import '../foundation/animated_surface.dart';
 import '../foundation/radius_scale.dart';
+import 'button.dart';
 
 class CoolIconButton extends StatefulWidget {
   final IconData icon;
@@ -17,6 +18,7 @@ class CoolIconButton extends StatefulWidget {
   final Color? backgroundColor;
   final double? radius;
   final String? tooltip;
+  final CoolButtonVariant variant;
 
   const CoolIconButton({
     super.key,
@@ -30,6 +32,7 @@ class CoolIconButton extends StatefulWidget {
     this.backgroundColor,
     this.radius,
     this.tooltip,
+    this.variant = CoolButtonVariant.primary,
   });
 
   @override
@@ -164,12 +167,57 @@ class _CoolIconButtonState extends State<CoolIconButton> {
       isEnabled: widget.enabled && !widget.isLoading,
     );
 
-    final size = widget.size ?? 24;
+    final size = widget.size ?? 24.0;
     final radius = widget.radius ?? CoolRadiusScale.md;
-    final bgColor = widget.backgroundColor ?? Colors.transparent;
 
-    final iconColor =
-        widget.iconColor ?? stateResolver.resolveColor(CoolColorToken.text);
+    final isFilled =
+        widget.variant != CoolButtonVariant.outline &&
+        widget.variant != CoolButtonVariant.text &&
+        widget.variant != CoolButtonVariant.ghost;
+    final isOutline = widget.variant == CoolButtonVariant.outline;
+
+    Color bgColor;
+    Color iconColor;
+
+    switch (widget.variant) {
+      case CoolButtonVariant.primary:
+        bgColor =
+            widget.backgroundColor ??
+            stateResolver.resolveColor(CoolColorToken.primary);
+        iconColor =
+            widget.iconColor ??
+            stateResolver.resolveColor(CoolColorToken.onPrimary);
+        break;
+      case CoolButtonVariant.secondary:
+        bgColor =
+            widget.backgroundColor ??
+            stateResolver.resolveColor(CoolColorToken.secondary);
+        iconColor =
+            widget.iconColor ??
+            stateResolver.resolveColor(CoolColorToken.onSecondary);
+        break;
+      case CoolButtonVariant.accent:
+        bgColor =
+            widget.backgroundColor ??
+            stateResolver.resolveColor(CoolColorToken.accent);
+        iconColor =
+            widget.iconColor ??
+            stateResolver.resolveColor(CoolColorToken.onAccent);
+        break;
+      case CoolButtonVariant.outline:
+      case CoolButtonVariant.text:
+      case CoolButtonVariant.ghost:
+        bgColor = widget.backgroundColor ?? Colors.transparent;
+        iconColor =
+            widget.iconColor ??
+            stateResolver.resolveColor(CoolColorToken.primary);
+        if (widget.variant == CoolButtonVariant.ghost) {
+          iconColor =
+              widget.iconColor ??
+              stateResolver.resolveColor(CoolColorToken.text);
+        }
+        break;
+    }
 
     final hoverTint = stateResolver.resolveColor(CoolColorToken.hover);
     final pressedTint = stateResolver.resolveColor(CoolColorToken.pressed);
@@ -193,7 +241,8 @@ class _CoolIconButtonState extends State<CoolIconButton> {
       backgroundColor: bgColor,
       tintColor: tintColor,
       radius: radius,
-      isFilled: true,
+      isFilled: isFilled,
+      isOutline: isOutline,
       child: SizedBox(
         width: size + 16,
         height: size + 16,
